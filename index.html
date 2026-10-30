@@ -4,55 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>글램독 양양 · 할로윈 파티</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-  html,body{margin:0;height:100%;background:#120c08;overflow:hidden;cursor:none}
-  body{display:flex;align-items:center;justify-content:center;font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#f6ece0}
-  #stage{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;background:#16100b;overflow:hidden}
+  html,body{margin:0;height:100%;background:#0e0814;overflow:hidden;cursor:none}
+  body{display:flex;align-items:center;justify-content:center;font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:#f7eee6}
+  #stage{position:relative;width:1920px;height:1080px;flex:none;transform-origin:center center;overflow:hidden;
+    background:radial-gradient(1200px 800px at 85% 10%,#2a1440 0%,rgba(42,20,64,0) 60%),radial-gradient(900px 700px at 70% 100%,#3a1a0c 0%,rgba(58,26,12,0) 60%),#0e0814}
 
-  /* 사진 */
-  .photos{position:absolute;left:0;top:0;width:980px;height:1080px;overflow:hidden}
-  .photos img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s ease;transform:scale(1.04)}
-  .photos img.on{opacity:1;animation:drift 9s ease-out forwards}
-  @keyframes drift{from{transform:scale(1.04)}to{transform:scale(1.10)}}
-  .photos::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(22,16,11,0) 70%,#16100b 100%)}
+  .media{position:absolute;left:0;top:0;width:608px;height:1080px;background:#000 url(poster.jpg) center/cover}
+  .media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+  .media video.on{opacity:1}
+  .media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,8,20,0) 82%,#0e0814 100%);pointer-events:none}
+  .media .tag{position:absolute;left:28px;bottom:30px;z-index:2;font-size:26px;font-weight:700;background:rgba(0,0,0,.55);padding:10px 18px;border-radius:10px;color:#ffd2a8}
 
-  /* 글 */
-  .text{position:absolute;left:1000px;top:0;width:860px;height:1080px;display:flex;flex-direction:column;justify-content:center}
+  .text{position:absolute;left:690px;top:0;width:1170px;height:1080px;display:flex;flex-direction:column;justify-content:center}
   .eyebrow{font-size:30px;letter-spacing:.24em;color:#ff8a2a;font-weight:700}
-  .date{margin-top:22px;font-size:40px;font-weight:600;color:#d9c7b3}
-  h1{margin:10px 0 0;font-size:100px;white-space:nowrap;line-height:1.12;font-weight:800;letter-spacing:-.02em}
+  .date{margin-top:14px;font-size:40px;font-weight:600;color:#d8c6e6}
+  h1{margin:6px 0 0;font-size:108px;line-height:1.1;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
   h1 em{font-style:normal;color:#ff8a2a}
-  .time{margin-top:30px;display:flex;align-items:center;gap:28px;white-space:nowrap}
-  .time .big{font-size:84px;font-weight:800;letter-spacing:-.01em;color:#fff}
-  .time .where{font-size:40px;font-weight:700;padding:14px 26px;border:3px solid #ff8a2a;border-radius:16px;color:#ffb070;line-height:1}
-  .way{margin-top:40px;display:flex;align-items:center;gap:26px;background:#2a1d13;border-left:8px solid #ff8a2a;border-radius:18px;padding:24px 34px}
+  .time{margin-top:22px;font-size:84px;font-weight:800;color:#fff;white-space:nowrap}
+  .way{margin-top:32px;display:flex;align-items:center;gap:30px;background:rgba(255,255,255,.07);border-left:10px solid #ff8a2a;border-radius:20px;padding:20px 34px}
   .way svg{width:84px;height:84px;flex:none}
-  .way-t{font-size:28px;font-weight:700;color:#ff8a2a;letter-spacing:.1em}
-  .way-b{margin-top:6px;font-size:44px;font-weight:600;line-height:1.3;color:#f6ece0}
+  .way-t{font-size:30px;font-weight:700;color:#ff8a2a;letter-spacing:.1em}
+  .way-b{margin-top:4px;font-size:46px;font-weight:600;line-height:1.28}
   .way-b b{color:#ffb070;font-weight:800}
-  .invite{margin-top:34px;font-size:42px;font-weight:700;line-height:1.35}
-  .invite span{font-size:32px;font-weight:500;color:#cdb8a3}
-  .chips{margin-top:44px;display:flex;flex-wrap:wrap;gap:16px}
-  .chips span{font-size:36px;font-weight:600;background:#2a1d13;border-radius:999px;padding:14px 30px;color:#f0dfcb}
-  .status{margin-top:40px;font-size:44px;font-weight:700;color:#16100b;background:#ff8a2a;border-radius:18px;padding:22px 34px;align-self:flex-start}
+  .invite{margin-top:28px;font-size:44px;font-weight:700;line-height:1.35}
+  .invite span{display:block;margin-top:4px;font-size:32px;font-weight:500;color:#cbb8d9}
+  .status{margin-top:30px;font-size:44px;font-weight:700;color:#1a0d06;background:#ff8a2a;border-radius:18px;padding:18px 34px;align-self:flex-start}
   .status.live{animation:pulse 2s ease-in-out infinite}
-  .status.done{background:#3a2a1e;color:#d9c7b3}
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,138,42,.55)}50%{box-shadow:0 0 0 22px rgba(255,138,42,0)}}
-  .foot{position:absolute;right:60px;top:200px;writing-mode:vertical-rl;display:none;font-size:28px;color:#8f7b68;letter-spacing:.05em}
-  .pumpkin{position:absolute;right:64px;top:118px;width:104px;height:104px}
-
+  .status.done{background:#3a2a44;color:#d8c6e6}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,138,42,.55)}50%{box-shadow:0 0 0 24px rgba(255,138,42,0)}}
+  .pumpkin{position:absolute;right:64px;top:112px;width:112px;height:112px}
   #fs{position:fixed;inset:0;background:transparent;border:0}
 </style>
 </head>
 <body>
 <div id="stage">
-  <div class="photos">
-    <img src="p1.jpg" alt="">
-    <img src="p2.jpg" alt="">
-    <img src="p4.jpg" alt="">
-    <img src="p3.jpg" alt="">
+  <div class="media" id="media">
+    <div class="tag">오늘 꾸민 지하 파티장</div>
   </div>
 
   <svg class="pumpkin" viewBox="0 0 100 100" aria-hidden="true">
@@ -65,53 +54,63 @@
   </svg>
 
   <div class="text">
-    <div class="eyebrow">GLAMDOG YANGYANG · HALLOWEEN</div>
+    <div class="eyebrow">GLAMDOG YANGYANG · HALLOWEEN PARTY</div>
     <div class="date" id="date">오늘 밤</div>
     <h1>오늘 밤, 지하에서<br><em>할로윈 파티</em></h1>
-    <div class="time">
-      <div class="big">저녁 8시 ~ 10시</div>
-    </div>
+    <div class="time">저녁 8시 ~ 10시</div>
     <div class="way">
       <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h10v10h10v10h10v10" stroke="#ff8a2a" stroke-width="5" fill="none" stroke-linejoin="round" stroke-linecap="round"/><path d="M30 40h8v-8" stroke="#ff8a2a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div><div class="way-t">오시는 길</div><div class="way-b"><b>공용주방 뒤쪽 계단</b>으로<br>지하로 내려오세요</div></div>
     </div>
-    <div class="invite">편하게 놀러 내려오셔서 사진도 찍고 가세요!<br><span>코스튬 · 댕댕이 동반 모두 환영해요</span></div>
+    <div class="invite">편하게 놀러 내려오셔서 사진도 찍고 가세요!<span>코스튬 · 댕댕이 동반 모두 환영해요</span></div>
     <div class="status" id="status">곧 시작해요</div>
   </div>
-
-  <div class="foot">자세한 내용은 카운터에 물어봐 주세요</div>
 </div>
 <button id="fs" aria-label="전체화면"></button>
 
 <script>
-  // 화면 크기에 맞춰 1920x1080 무대를 확대/축소
   const stage = document.getElementById('stage');
-  function fit(){
-    const s = Math.min(innerWidth/1920, innerHeight/1080);
-    stage.style.transform = 'scale(' + s + ')';
-  }
+  function fit(){ stage.style.transform = 'scale(' + Math.min(innerWidth/1920, innerHeight/1080) + ')'; }
   addEventListener('resize', fit); fit();
 
-  // 사진 넘기기 (8초마다)
-  const imgs = [...document.querySelectorAll('.photos img')];
-  let i = 0; imgs[0].classList.add('on');
-  setInterval(() => {
-    imgs[i].classList.remove('on');
-    i = (i + 1) % imgs.length;
-    void imgs[i].offsetWidth;
-    imgs[i].classList.add('on');
-  }, 8000);
-
-  // 날짜·진행 상태 (한국 시간 기준)
-  const days = ['일','월','화','수','목','금','토'];
-  function kstNow(){
-    const d = new Date();
-    return new Date(d.getTime() + (d.getTimezoneOffset() + 540) * 60000);
+  // 영상 순서대로 반복 재생 (소리 없음). 짧은 영상은 2번 재생
+  const list = [['v1.mp4',1],['v2.mp4',3],['v3.mp4',1],['v4.mp4',1],['v5.mp4',1]];
+  const media = document.getElementById('media');
+  const players = list.map(([src]) => {
+    const v = document.createElement('video');
+    v.src = src; v.muted = true; v.playsInline = true; v.preload = 'auto';
+    v.setAttribute('muted',''); v.setAttribute('playsinline','');
+    media.insertBefore(v, media.firstChild);
+    return v;
+  });
+  let idx = 0, rep = 0;
+  function playAt(n){
+    players.forEach((p,k) => { if (k !== n) { p.classList.remove('on'); p.pause(); } });
+    const v = players[n]; v.currentTime = 0;
+    v.classList.add('on');
+    const pr = v.play(); if (pr && pr.catch) pr.catch(() => setTimeout(next, 3000));
   }
+  function next(){
+    rep++;
+    if (rep >= list[idx][1]) { rep = 0; idx = (idx + 1) % players.length; }
+    playAt(idx);
+  }
+  players.forEach(v => { v.addEventListener('ended', next); v.addEventListener('error', () => setTimeout(next, 1000)); });
+  playAt(0);
+  // 영상이 멈춰 있으면 다음으로 (TV 브라우저 대비)
+  let lastT = -1, stuck = 0;
+  setInterval(() => {
+    const v = players[idx];
+    if (v.currentTime === lastT) { if (++stuck >= 4) { stuck = 0; next(); } } else stuck = 0;
+    lastT = v.currentTime;
+  }, 2000);
+
+  // 날짜·진행 상태 (한국 시간)
+  const days = ['일','월','화','수','목','금','토'];
+  function kstNow(){ const d = new Date(); return new Date(d.getTime() + (d.getTimezoneOffset() + 540) * 60000); }
   function tick(){
     const n = kstNow();
-    document.getElementById('date').textContent =
-      (n.getMonth()+1) + '월 ' + n.getDate() + '일 (' + days[n.getDay()] + ') 오늘 밤';
+    document.getElementById('date').textContent = (n.getMonth()+1) + '월 ' + n.getDate() + '일 (' + days[n.getDay()] + ')';
     const mins = n.getHours()*60 + n.getMinutes();
     const st = document.getElementById('status');
     st.classList.remove('live','done');
@@ -119,26 +118,21 @@
       const left = 20*60 - mins, h = Math.floor(left/60), m = left % 60;
       st.textContent = '파티 시작까지 ' + (h ? h + '시간 ' : '') + m + '분';
     } else if (mins < 22*60) {
-      st.textContent = '지금 파티 중! 지하로 내려오세요';
-      st.classList.add('live');
+      st.textContent = '지금 파티 중! 지하로 내려오세요'; st.classList.add('live');
     } else {
-      st.textContent = '오늘 파티는 끝났어요. 함께해 주셔서 고마워요';
-      st.classList.add('done');
+      st.textContent = '오늘 파티는 끝났어요. 함께해 주셔서 고마워요'; st.classList.add('done');
     }
   }
   tick(); setInterval(tick, 20000);
 
-  // 화면 꺼짐 방지 + 클릭하면 전체화면
   async function keepAwake(){ try { await navigator.wakeLock?.request('screen'); } catch(e){} }
   keepAwake();
   document.addEventListener('visibilitychange', () => { if (!document.hidden) keepAwake(); });
   document.getElementById('fs').addEventListener('click', () => {
     const el = document.documentElement;
     (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
-    keepAwake();
+    keepAwake(); players[idx].play();
   });
-
-  // 6시간마다 새로고침 (수정 내용 자동 반영)
   setTimeout(() => location.reload(), 6*60*60*1000);
 </script>
 </body>
