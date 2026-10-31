@@ -262,18 +262,18 @@ details .in{padding:0 14px 12px}
 
   <!-- 추첨 -->
   <section class="panel" id="p-lotto">
-    <h2>할로윈 복권 추첨 <span class="mu" style="font-size:.85rem;font-weight:700">21:45~21:55</span></h2>
+    <h2>꽝 번호 간식 추첨 <span class="mu" style="font-size:.85rem;font-weight:700">21:45~21:55</span></h2>
     <div class="card">
-      <p class="say">"자, 기다리던 할로윈 복권 추첨 시간이에요! 3등부터 뽑을게요."</p>
-      <p class="act" style="margin:0">바구니 크루가 카드 1장 뽑기 → 진행자가 객실 번호 읽기</p>
+      <p class="say">"복권에서 꽝 나온 분들, 아직 기회가 남았어요! 지금부터 꽝 응모번호를 뽑아서 간식을 드릴게요!"</p>
+      <p class="act" style="margin:0">꽝 응모번호만 추첨 → 뽑힌 번호 읽기 → 응모권 확인 → 간식 전달</p>
     </div>
     <div id="lotto"></div>
     <div class="card">
       <h3>꼭 지킬 것</h3>
       <ul class="bul">
-        <li>당첨 객실이 자리에 없으면 객실로 연락해서 선물 전달 <b>(다시 뽑지 않기)</b></li>
-        <li>숙박권에 당첨 객실 적고 확인 사인</li>
-        <li>당첨 팀 사진은 보호자 동의 후 촬영</li>
+        <li><b>꽝인 응모권 번호만</b> 추첨 대상</li>
+        <li>객실 번호가 아니라 <b>응모권에 적힌 번호</b>를 부르기</li>
+        <li>뽑힌 번호와 응모권을 확인하고 간식 전달 체크</li>
       </ul>
     </div>
     <button class="btn blk" id="toClosing">추첨 끝 → 마무리 멘트</button>
@@ -418,14 +418,14 @@ const QS = QRAW.trim().split('\n').map((l,i)=>{
 });
 
 const TL = [
-  {s:'19:30',e:'20:00',t:'크루 브리핑',d:'역할 확인 · 간식/입장 카드 수량 체크 · 바구니 비우기 · 선물 3세트 준비',go:['role','역할 보기'],go2:['check','준비물 체크']},
-  {s:'20:00',e:'20:40',t:'입장 · 포토존',d:'코스튬 확인 · 바구니 크루에게 카드 넣고 간식 받기 · 포토존 촬영',go:['say:s-front','프런트 안내 멘트']},
+  {s:'19:30',e:'20:00',t:'크루 브리핑',d:'역할 확인 · 복권 응모권/간식 수량 체크 · 꽝 번호 추첨 준비',go:['role','역할 보기'],go2:['check','준비물 체크']},
+  {s:'20:00',e:'20:40',t:'입장 · 포토존',d:'코스튬 확인 · 복권 결과 확인 · 꽝 응모번호 모으기 · 포토존 촬영',go:['say:s-front','프런트 안내 멘트']},
   {s:'20:40',e:'20:50',t:'오프닝',d:'인사 · 크루 소개 · 안전 수칙 1분 · 진행 순서 안내',go:['say:s-open','오프닝 멘트']},
   {s:'20:50',e:'21:15',t:'자유 시간',d:'당구 · 탁구 · 크루와 어울리기 · 음식 나눠 먹기'},
   {s:'21:15',e:'21:25',t:'할로윈 퀴즈',d:'100문제에서 순서대로 · 정답 맞힌 팀에 강아지 간식',go:['quiz','퀴즈 시작'],go2:['say:s-quiz','퀴즈 멘트']},
   {s:'21:25',e:'21:35',t:'자유 시간',d:'"응모 마감 10분 전" 안내부터!',go:['say:s-close','마감 10분 전 멘트']},
-  {s:'21:35',e:'21:45',t:'응모 마감',d:'바구니 회수 · 응모 카드 수 확인',go:['say:s-close','응모 마감 멘트']},
-  {s:'21:45',e:'21:55',t:'할로윈 복권 추첨',d:'3등 → 2등 → 1등 · 선물 바로 전달 · 당첨 사진 · 단체 사진',go:['lotto','추첨 진행']},
+  {s:'21:35',e:'21:45',t:'꽝 번호 응모 마감',d:'꽝 번호만 모였는지 확인 · 추첨 준비',go:['say:s-close','응모 마감 멘트']},
+  {s:'21:45',e:'21:55',t:'꽝 번호 간식 추첨',d:'꽝 응모번호 추첨 · 응모권 확인 · 간식 전달',go:['lotto','추첨 진행']},
   {s:'21:55',e:'22:00',t:'마무리',d:'매너타임 안내 · 정리',go:['say:s-end','마무리 멘트']},
 ];
 
@@ -433,32 +433,31 @@ const SCRIPTS = [
   {id:'s-front',t:'입실 안내 (프런트)',tm:'체크인 때',k:'front',html:`
     <p class="say">"오늘 밤 8시부터 10시까지 지하 '비밀의 방'에서 할로윈 파티가 있어요."</p>
     <p class="say">"코스튬 하고 오시면 무료로 들어오실 수 있고, 코스튬이 없으시면 카운터에서 꾸미기 용품을 사실 수 있어요."</p>
-    <p class="say">"이건 객실당 한 장 드리는 입장 카드예요. 파티에서 바구니 든 크루한테 'Trick or treat!' 하고 카드를 넣으시면 강아지 간식을 드리고 할로윈 복권에도 응모돼요."</p>
-    <p class="say">"9시 45분에 1등부터 3등까지 뽑고, 선물은 그 자리에서 바로 드려요. 카드는 다시 발급이 안 되니까 꼭 챙겨 와 주세요."</p>
-    <p class="act">카드에 객실 번호 · 반려견 수 · 날짜 체크 후 전달 (객실당 1장)</p>`},
+    <p class="say">"이건 복권 형식의 응모권이에요. 복권 결과를 확인해 주세요."</p>
+    <p class="say">"꽝이 나와도 버리지 마세요! 꽝인 분들만 번호로 한 번 더 추첨해서 간식을 드려요. 9시 35분까지 꽝 응모번호를 크루에게 알려 주시고, 9시 45분 추첨 때 응모권을 꼭 챙겨 와 주세요."</p>
+    <p class="act">복권 응모권 전달 · 응모번호 확인 · 꽝 번호 추가 추첨 안내</p>`},
   {id:'s-open',t:'오프닝',tm:'20:40',k:'open',html:`
     <p class="say">"안녕하세요! 글램독 양양점 비밀의 방 할로윈 파티에 오신 걸 환영해요! 오늘 함께할 크루들을 소개할게요."</p>
     <p class="act">크루가 한 명씩 "Hi! I'm ○○!"</p>
     <p class="say">"모두가 즐거운 파티를 위해 다섯 가지만 부탁드릴게요."</p>
     <ol class="rules"><li>목줄은 꼭 해주세요</li><li>수컷 친구들은 매너벨트</li><li>예민한 아이는 안아주세요</li><li>초콜릿, 자일리톨 같은 사람 간식은 강아지에게 주지 마세요</li><li>밤 10시 이후엔 객실로 이동해 주세요</li></ol>
-    <p class="say">"오늘 순서는요, 9시 15분에 할로윈 퀴즈! 맞히면 강아지 간식 드려요. 그리고 9시 45분에 할로윈 복권으로 1등부터 3등까지 뽑아요."</p>
-    <p class="say">"원래는 코스튬 투표를 하려고 했는데, 보호자님들께 그 자리에서 바로 선물을 드리고 싶어서 현장 복권으로 바꿨어요."</p>
-    <p class="say">"아직 입장 카드 안 넣으셨으면 바구니 든 크루에게 'Trick or treat!' 하고 넣어 주세요!"</p>`},
+    <p class="say">"오늘 순서는요, 9시 15분에 할로윈 퀴즈! 맞히면 강아지 간식 드려요. 그리고 9시 45분에는 복권에서 꽝 나온 분들만 번호로 한 번 더 추첨해서 간식을 드려요!"</p>
+    <p class="say">"복권에서 꽝 나온 분은 크루에게 응모번호를 알려 주세요. 응모권은 버리지 말고 꼭 챙겨 주세요!"</p>`},
   {id:'s-quiz',t:'할로윈 퀴즈',tm:'21:15',k:'quiz',html:`
     <h3 class="mu" style="font-size:.85rem">시작</h3>
     <p class="say">"지금부터 할로윈 퀴즈 시간이에요! 손 먼저 든 팀이 대답하고, 맞히면 강아지 간식을 드려요. 한 번 맞힌 팀은 다음 문제 한 번 쉬어 갈게요!"</p>
     <button class="btn pri blk" data-goto="quiz" style="margin-bottom:12px">퀴즈 문제 열기</button>
     <h3 class="mu" style="font-size:.85rem">퀴즈 끝</h3>
-    <p class="say">"퀴즈 참여해 주셔서 감사해요! 9시 45분에 할로윈 복권 추첨해요. 응모는 9시 35분 마감이니까 아직 안 넣으셨으면 지금 넣어 주세요!"</p>`},
+    <p class="say">"퀴즈 참여해 주셔서 감사해요! 9시 45분에는 꽝 번호로 간식 추첨을 해요. 복권에서 꽝 나온 분은 9시 35분까지 크루에게 응모번호를 알려 주세요!"</p>`},
   {id:'s-close',t:'응모 마감 안내',tm:'21:25 · 21:35',k:'close',html:`
     <div class="chip or" style="margin-bottom:8px">21:25</div>
-    <p class="say">"할로윈 복권 응모 마감 10분 전이에요! 입장 카드 아직 안 넣으신 분은 바구니 든 크루를 찾아 주세요!"</p>
+    <p class="say">"꽝 번호 간식 추첨, 응모 마감 10분 전이에요! 복권에서 꽝 나온 분은 크루에게 응모번호를 알려 주세요. 응모권도 꼭 챙겨 주세요!"</p>
     <div class="chip or" style="margin-bottom:8px">21:35</div>
-    <p class="say">"응모 마감됐어요! 10분 뒤에 추첨할게요. 당첨 객실이 자리에 안 계시면 객실로 연락드릴게요."</p>
-    <p class="act">바구니 회수 · 응모 카드 수 확인</p>`},
-  {id:'s-lotto',t:'할로윈 복권 추첨',tm:'21:45',k:'lotto',html:`
-    <p class="say">"자, 기다리던 할로윈 복권 추첨 시간이에요! 3등부터 뽑을게요."</p>
-    <button class="btn pri blk" data-goto="lotto">추첨 화면 열기 (당첨 멘트 자동 완성)</button>`},
+    <p class="say">"꽝 번호 응모가 마감됐어요! 10분 뒤에 번호를 뽑아서 간식을 드릴게요. 응모권 챙겨서 함께해 주세요!"</p>
+    <p class="act">꽝 응모번호만 모였는지 확인 · 추첨 준비</p>`},
+  {id:'s-lotto',t:'꽝 번호 간식 추첨',tm:'21:45',k:'lotto',html:`
+    <p class="say">"복권에서 꽝 나온 분들, 아직 기회가 남았어요! 지금부터 꽝 응모번호를 뽑아서 간식을 드릴게요!"</p>
+    <button class="btn pri blk" data-goto="lotto">꽝 번호 추첨 화면 열기</button>`},
   {id:'s-end',t:'마무리',tm:'21:55',k:'end',html:`
     <p class="say">"오늘 비밀의 방 할로윈 파티 함께해 주셔서 감사해요! 마지막으로 다 같이 단체 사진 한 장 찍을게요!"</p>
     <p class="act">단체 사진</p>
@@ -466,27 +465,23 @@ const SCRIPTS = [
     <p class="say">"글램독은 이런 파티 앞으로도 계속 열 거예요. 인스타 <b>@glamdog_kr</b> 팔로우해 두시면 다음 파티 제일 먼저 알려드릴게요. 좋은 밤 보내세요!"</p>`},
 ];
 
-const PRIZES = [
-  {r:3,p:'글램독 반려견 수건 2장 + 반려견 샴푸 1개',say:(x)=>`"3등은… <em>${x}</em>호! 축하드려요! 글램독 반려견 수건 2장이랑 샴푸 드려요!"`},
-  {r:2,p:'강아지 간식 + 영양제',say:(x)=>`"2등은… <em>${x}</em>호! 강아지 간식이랑 영양제 세트예요!"`},
-  {r:1,p:'글램독 1박 숙박권 (11월 30일까지)',say:(x)=>`"두구두구… 오늘의 1등은… <em>${x}</em>호! 글램독 1박 숙박권이에요! 11월 30일까지 쓰실 수 있어요!"`},
-];
-
 const ROLES = [
-  {k:'host',t:'진행자',c:'1명',d:'오프닝 · 퀴즈 · 복권 추첨 · 마무리'},
-  {k:'basket',t:'바구니 담당',c:'1명',d:'눈에 띄는 코스튬 · 입장 카드 받기 · 반려견 1마리당 간식 1개 · 추첨 때 바구니 들고 앞으로'},
+  {k:'host',t:'진행자',c:'1명',d:'오프닝 · 퀴즈 · 꽝 번호 간식 추첨 · 마무리'},
+  {k:'basket',t:'응모 담당',c:'1명',d:'복권 결과 확인 · 꽝 응모번호 모으기 · 추첨 준비 · 뽑힌 응모권 확인 후 간식 전달'},
   {k:'door',t:'입구 담당',c:'1명',d:'코스튬 확인 · 코스튬 없는 분은 카운터 꾸미기 용품 안내 · 꽉 차면 "10분 뒤 다시 와주세요"'},
   {k:'photo',t:'사진 담당',c:'1명',d:'포토존 · 보호자 동의 받고 촬영 (후기용)'},
   {k:'safe',t:'반려견 안전',c:'1~2명',d:'신경전 나면 떼어놓기 · 배변 정리 · 목줄 확인'},
   {k:'rest',t:'나머지 크루',c:'-',d:'지하가 좁으면 입구·1층에서 손님 맞이 (지하 안에는 크루 2~3명만)'},
 ];
 
-const CHECK = ['입장 카드 (하루 31장)','펜 (객실 번호 기입용)','바구니 1개','웰컴 간식 (반려견 수만큼)','퀴즈 간식 약 15~20개','3등 선물: 수건 2장 + 샴푸','2등 선물: 간식 + 영양제','1등 선물: 숙박권 (프린트)','카운터 꾸미기 용품 (타투 스티커 등)','배변봉투 · 물티슈','이 큐카드 (폰 충전!)'];
+const CHECK = ['복권 형식 응모권','펜 · 꽝 응모번호 기록용 종이','꽝 번호 추첨용 바구니','웰컴 간식 (반려견 수만큼)','퀴즈 간식 약 15~20개','꽝 번호 추첨용 간식 (별도 준비)','복권 당첨 선물 준비','카운터 꾸미기 용품 (타투 스티커 등)','배변봉투 · 물티슈','이 큐카드 (폰 충전!)'];
 
 /* ---------- state ---------- */
 const KEY='gd_yy_halloween_cue_v1';
 let S; try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
 S.fs ??= 17; S.quiz ??= {fri:{used:[],idx:0},sat:{used:[],idx:0}}; S.lotto ??= {fri:{},sat:{}}; S.check ??= {fri:{},sat:{}}; S.names ??= {};
+S.snack ??= {fri:[],sat:[]};
+if(S.checkVersion!==2){S.check={fri:{},sat:{}};S.checkVersion=2;}
 S.view ??= 'card'; S.filter ??= 'all';
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s);
@@ -553,7 +548,7 @@ function tick(){
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn pri" data-goto="check">준비물 체크</button><button class="btn" data-goto="role">역할 보기</button></div>`;
   } else {
     nowT='오늘 파티 끝'; nowR='수고하셨어요!';
-    card=`<div class="lbl">종료</div><div class="ttl">오늘 파티 끝!</div><p style="margin:6px 0 0">매너타임 · 정리. 당첨 객실 선물 전달 다 됐는지 추첨 화면에서 확인하세요.</p><div style="margin-top:10px"><button class="btn pri" data-goto="lotto">추첨 기록 보기</button></div>`;
+    card=`<div class="lbl">종료</div><div class="ttl">오늘 파티 끝!</div><p style="margin:6px 0 0">매너타임 · 정리. 뽑힌 번호에 간식 전달 다 됐는지 추첨 화면에서 확인하세요.</p><div style="margin-top:10px"><button class="btn pri" data-goto="lotto">추첨 기록 보기</button></div>`;
   }
   $('#nowT').textContent=nowT; $('#nowR').textContent=nowR;
   if(cur!==lastCur || nowS%10===0){ $('#nowCard').innerHTML=card; }
@@ -640,20 +635,17 @@ $('#qList').onclick=e=>{
 
 /* ---------- lotto ---------- */
 function renderLotto(){
-  const L=S.lotto[S.day];
-  $('#lotto').innerHTML=PRIZES.map(p=>{const v=L['r'+p.r]||''; const done=!!L['d'+p.r];
-    return `<div class="card lotto-card r${p.r} ${done?'fin':''}"><div class="step"><div class="rank">${p.r}등</div><div>
-      <div class="prize">${p.p}</div>
-      <div class="room"><input data-r="${p.r}" inputmode="numeric" placeholder="객실 번호" value="${esc(v)}"><span>호</span></div>
-      <div class="lsay" id="ls${p.r}">${p.say(v?esc(v):'○○○')}</div>
-      <div class="done-row"><button class="tog ${done?'on':''}" data-t="d${p.r}">${done?'✓ 선물 전달 완료':'선물 전달 완료'}</button>
-      ${p.r===1?`<button class="tog ${L.sign?'on':''}" data-t="sign">${L.sign?'✓ 숙박권 사인 받음':'숙박권 객실·사인'}</button>`:''}
-      <button class="tog ${L['away'+p.r]?'on':''}" data-t="away${p.r}">${L['away'+p.r]?'✓ 자리 없음 → 객실 연락':'자리에 없음'}</button></div>
-    </div></div></div>`}).join('') + `<div class="card"><button class="tog ${L.group?'on':''}" data-t="group" style="width:100%">${L.group?'✓ 단체 사진 찍음':'단체 사진 찍기'}</button></div>`;
+  const L=S.snack[S.day];
+  $('#lotto').innerHTML='<p class="mu">뽑힌 응모번호를 적고 간식 전달을 체크하세요. 추첨 횟수는 현장에서 정하면 돼요.</p>'+L.map((v,i)=>
+    `<div class="card lotto-card ${v.done?'fin':''}"><h3>${i+1}번째 뽑힌 번호</h3><div class="room"><input data-win="${i}" inputmode="numeric" placeholder="응모번호" value="${esc(v.no)}" aria-label="${i+1}번째 응모번호"><span>번</span></div><div class="lsay" id="ls${i}">${snackSay(v.no)}</div><button class="tog ${v.done?'on':''}" data-done="${i}">${v.done?'✓ 간식 전달 완료':'간식 전달 완료'}</button></div>`
+  ).join('')+'<button class="btn pri blk" id="addWinner" style="margin-bottom:12px">＋ 뽑힌 번호 기록</button>';
 }
-$('#lotto').addEventListener('input',e=>{const i=e.target.closest('input[data-r]'); if(!i)return; const r=+i.dataset.r; S.lotto[S.day]['r'+r]=i.value.trim(); save();
-  const p=PRIZES.find(z=>z.r===r); $('#ls'+r).innerHTML=p.say(i.value.trim()?esc(i.value.trim()):'○○○');});
-$('#lotto').addEventListener('click',e=>{const b=e.target.closest('[data-t]'); if(!b)return; const L=S.lotto[S.day]; L[b.dataset.t]=!L[b.dataset.t]; save(); renderLotto();});
+function snackSay(no){return '"이번 번호는… <em>'+esc(no||'○○○')+'</em>번! 응모권 보여 주시면 간식 드릴게요!"';}
+$('#lotto').addEventListener('input',e=>{const i=e.target.closest('input[data-win]');if(!i)return;S.snack[S.day][+i.dataset.win].no=i.value.trim();save();$('#ls'+i.dataset.win).innerHTML=snackSay(i.value.trim());});
+$('#lotto').addEventListener('click',e=>{
+  if(e.target.closest('#addWinner')){S.snack[S.day].push({no:'',done:false});save();renderLotto();const all=document.querySelectorAll('#lotto input');all[all.length-1].focus();return;}
+  const b=e.target.closest('[data-done]');if(!b)return;const v=S.snack[S.day][+b.dataset.done];if(!v.no){toast('뽑힌 응모번호를 먼저 적어주세요');return;}v.done=!v.done;save();renderLotto();
+});
 $('#toClosing').onclick=()=>go('say:s-end');
 
 /* ---------- roles ---------- */
