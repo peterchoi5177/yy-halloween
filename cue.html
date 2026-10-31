@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#121014">
+<title>비밀의 방 할로윈 파티 · 진행 큐카드</title>
+<style>
+:root{
+  --fs:17px;
+  --bg:#121014; --card:#1e1a21; --card2:#27222b; --line:#3a333f;
+  --tx:#f5efe8; --mu:#b9afbd; --or:#ff8f45; --or2:#ffb27d; --pu:#b59cff; --gr:#5fd38d; --rd:#ff6b6b;
+  --tabh:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:var(--fs)}
+body{margin:0;background:var(--bg);color:var(--tx);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+  line-height:1.55;word-break:keep-all;overflow-wrap:anywhere;
+  padding-bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 12px)}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input{font:inherit}
+
+/* header */
+.hd{position:sticky;top:0;z-index:20;background:rgba(18,16,20,.96);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);padding:calc(8px + env(safe-area-inset-top)) 14px 8px}
+.hd-row{display:flex;align-items:center;gap:8px}
+.brand{flex:1;min-width:0}
+.brand b{display:block;font-size:.95rem;letter-spacing:-.01em}
+.brand small{color:var(--mu);font-size:.72rem}
+.clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:1.25rem;color:var(--or)}
+.hbtn{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:6px 9px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.hbtn.on{background:var(--or);color:#1a0f06;border-color:var(--or)}
+.now{margin-top:8px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:8px 10px;width:100%;text-align:left}
+.now .dot{width:9px;height:9px;border-radius:50%;background:var(--or);flex:none;box-shadow:0 0 0 4px rgba(255,143,69,.18);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(255,143,69,.05)}}
+.now .t{flex:1;min-width:0;font-weight:700;font-size:.92rem}
+.now .r{color:var(--or2);font-size:.82rem;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* layout */
+main{padding:14px 14px 0;max-width:640px;margin:0 auto}
+.panel{display:none}
+.panel.show{display:block}
+h2{font-size:1.3rem;margin:4px 0 12px;letter-spacing:-.02em}
+h3{font-size:1.05rem;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.mu{color:var(--mu)}
+.chip{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line);color:var(--mu);white-space:nowrap}
+.chip.or{background:rgba(255,143,69,.15);border-color:rgba(255,143,69,.45);color:var(--or2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:46px;padding:10px 16px;border-radius:12px;
+  background:var(--card2);border:1px solid var(--line);font-weight:800}
+.btn.pri{background:var(--or);border-color:var(--or);color:#1a0f06}
+.btn.sm{min-height:36px;padding:6px 12px;font-size:.85rem;border-radius:10px}
+.btn.blk{width:100%}
+
+/* now card */
+.nowcard{border-color:rgba(255,143,69,.55);background:linear-gradient(180deg,rgba(255,143,69,.12),rgba(255,143,69,.03) 70%),var(--card)}
+.nowcard .lbl{font-size:.75rem;font-weight:800;color:var(--or);letter-spacing:.08em}
+.nowcard .ttl{font-size:1.6rem;font-weight:900;letter-spacing:-.02em;margin:2px 0 4px}
+.nowcard .tm{font-variant-numeric:tabular-nums;color:var(--or2);font-weight:700}
+.nowcard .left{font-size:1.05rem;font-weight:800;margin-top:6px}
+.nextline{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:.9rem;color:var(--mu)}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;background:var(--card)}
+.tl .when{font-variant-numeric:tabular-nums;font-weight:800;font-size:.9rem;color:var(--or2);line-height:1.3}
+.tl .what b{display:block;font-size:1.02rem}
+.tl .what p{margin:2px 0 0;color:var(--mu);font-size:.9rem}
+.tl .what .btn{margin-top:8px}
+.tl li.past{opacity:.45}
+.tl li.cur{border-color:var(--or);box-shadow:0 0 0 2px rgba(255,143,69,.25) inset;background:rgba(255,143,69,.08)}
+.tl li.cur .when::after{content:"지금";display:block;margin-top:4px;width:max-content;font-size:.68rem;background:var(--or);color:#1a0f06;padding:1px 7px;border-radius:999px}
+
+/* scripts */
+.jump{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin:-2px -14px 10px;padding-left:14px;padding-right:14px;scrollbar-width:none}
+.jump::-webkit-scrollbar{display:none}
+.jump button{flex:none}
+.say{font-size:1.18rem;line-height:1.75;margin:0 0 12px;padding-left:12px;border-left:3px solid var(--or)}
+.act{font-size:.92rem;color:var(--mu);background:var(--card2);border-radius:10px;padding:8px 10px;margin:0 0 12px}
+.act::before{content:"→ ";color:var(--pu);font-weight:800}
+.rules{list-style:none;margin:0 0 12px;padding:0;counter-reset:r}
+.rules li{counter-increment:r;display:flex;gap:10px;align-items:flex-start;font-size:1.12rem;font-weight:700;padding:9px 10px;border-radius:10px;background:var(--card2);margin-bottom:6px}
+.rules li::before{content:counter(r);flex:none;width:26px;height:26px;border-radius:50%;background:var(--or);color:#1a0f06;display:grid;place-items:center;font-size:.85rem;font-weight:900;margin-top:1px}
+.sc{scroll-margin-top:172px}
+.sc .head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sc .head h3{margin:0;flex:1}
+.sc.cur{border-color:var(--or)}
+.sc.cur .head::after{content:"지금";font-size:.7rem;font-weight:900;background:var(--or);color:#1a0f06;padding:2px 8px;border-radius:999px}
+
+/* quiz */
+.seg{display:flex;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;min-height:40px;border-radius:9px;font-weight:800;font-size:.9rem;color:var(--mu)}
+.seg button.on{background:var(--tx);color:#121014}
+.qmeta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0}
+.timer{font-variant-numeric:tabular-nums}
+.qcard{min-height:300px;display:flex;flex-direction:column}
+.qtop{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.qnum{font-size:1.1rem;font-weight:900;color:var(--or)}
+.qtop .used{margin-left:auto}
+.qtext{font-size:1.55rem;font-weight:800;line-height:1.45;letter-spacing:-.02em;margin:4px 0 12px}
+.qtext.ox{font-size:1.5rem}
+.choices{list-style:none;margin:0 0 12px;padding:0}
+.choices li{font-size:1.2rem;font-weight:700;padding:10px 12px;border-radius:12px;background:var(--card2);margin-bottom:6px}
+.choices li.ok{background:rgba(95,211,141,.18);outline:2px solid var(--gr)}
+.ans{margin-top:auto;border-radius:14px;padding:14px;background:rgba(95,211,141,.12);border:1px solid rgba(95,211,141,.45)}
+.ans .a{font-size:1.7rem;font-weight:900;color:var(--gr);line-height:1.3}
+.ans .tip{margin-top:6px;font-size:1.05rem}
+.ans .tip::before{content:"한마디 ";font-size:.75rem;font-weight:800;color:var(--mu);margin-right:4px}
+.ans.hide{display:none}
+.oxbig{display:flex;gap:10px;margin:0 0 12px}
+.oxbig span{flex:1;text-align:center;font-size:2.4rem;font-weight:900;border-radius:14px;background:var(--card2);padding:6px 0}
+.oxbig span.ok{background:rgba(95,211,141,.2);outline:2px solid var(--gr);color:var(--gr)}
+.qnav{position:sticky;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 8px);z-index:5;display:grid;grid-template-columns:72px 1fr;gap:8px;margin:0 0 12px}
+.qnav .btn{min-height:58px;font-size:1.1rem;box-shadow:0 6px 20px rgba(0,0,0,.45)}
+.qnav .btn.pri{font-size:1.2rem}
+.cat-OX{color:#7cc7ff!important;border-color:rgba(124,199,255,.45)!important;background:rgba(124,199,255,.12)!important}
+.cat-넌센스{color:#ffd166!important;border-color:rgba(255,209,102,.45)!important;background:rgba(255,209,102,.12)!important}
+.cat-객관식{color:#b59cff!important;border-color:rgba(181,156,255,.45)!important;background:rgba(181,156,255,.12)!important}
+.cat-할로윈{color:#ff9a5a!important;border-color:rgba(255,154,90,.45)!important;background:rgba(255,154,90,.12)!important}
+.cat-초성{color:#6ee7b7!important;border-color:rgba(110,231,183,.45)!important;background:rgba(110,231,183,.12)!important}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px}
+details summary{list-style:none;padding:12px 14px;font-weight:800;display:flex;align-items:center;gap:8px}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:"+";margin-left:auto;color:var(--mu);font-size:1.2rem}
+details[open] summary::after{content:"−"}
+details .in{padding:0 14px 12px}
+.bul{margin:0;padding-left:18px}
+.bul li{margin-bottom:6px}
+.prev{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.prev input{width:84px;min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--tx);padding:6px 10px;text-align:center}
+.qlist{list-style:none;margin:0;padding:0}
+.qlist li{display:grid;grid-template-columns:34px minmax(0,1fr) 76px;gap:8px;align-items:start;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:6px;background:var(--card)}
+.qlist .n{font-weight:900;color:var(--or2);font-variant-numeric:tabular-nums}
+.qlist .q{font-size:.95rem}
+.qlist .q b{display:block;color:var(--gr);font-size:.95rem;margin-top:3px}
+.qlist .ck{display:flex;gap:4px;justify-content:flex-end}
+.qlist .ck button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card2);font-size:.75rem;font-weight:800;color:var(--mu)}
+.qlist .ck button.on{background:var(--gr);border-color:var(--gr);color:#08130c}
+.qlist li.is-used{opacity:.5}
+.qlist li.is-cur{border-color:var(--or)}
+
+/* lotto */
+.step{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:start}
+.rank{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-weight:900;font-size:1.15rem;background:var(--card2);border:1px solid var(--line)}
+.r1 .rank{background:var(--or);color:#1a0f06;border-color:var(--or)}
+.prize{font-weight:800;font-size:1.05rem;margin-bottom:8px}
+.room{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.room input{flex:1;min-width:0;min-height:50px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--tx);font-size:1.4rem;font-weight:900;padding:6px 12px;text-align:center}
+.room input:focus{outline:none;border-color:var(--or)}
+.room span{font-weight:800;font-size:1.2rem}
+.lsay{font-size:1.2rem;line-height:1.7;font-weight:700;padding:10px 12px;border-radius:12px;background:var(--card2);margin-bottom:10px}
+.lsay em{font-style:normal;color:var(--or);font-weight:900}
+.done-row{display:flex;gap:8px;flex-wrap:wrap}
+.tog{min-height:40px;padding:6px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);font-weight:800;font-size:.88rem;color:var(--mu)}
+.tog.on{background:var(--gr);border-color:var(--gr);color:#08130c}
+.lotto-card.fin{border-color:rgba(95,211,141,.6)}
+
+/* roles */
+.role{display:grid;grid-template-columns:1fr auto;gap:4px 10px}
+.role b{font-size:1.05rem}
+.role .cnt{color:var(--or2);font-weight:800;font-size:.9rem}
+.role p{grid-column:1/-1;margin:2px 0 0;color:var(--mu);font-size:.95rem}
+.role .nm{grid-column:1/-1;margin-top:6px}
+.role .nm input{width:100%;min-height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--tx);padding:6px 10px}
+
+/* checklist */
+.cl{list-style:none;margin:0;padding:0}
+.cl li button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-bottom:6px;font-size:1rem;font-weight:700}
+.cl .bx{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--mu);display:grid;place-items:center;font-size:.9rem;font-weight:900}
+.cl li.on button{opacity:.55}
+.cl li.on .bx{background:var(--gr);border-color:var(--gr);color:#08130c}
+.cl li.on .bx::after{content:"✓"}
+.prog{height:8px;border-radius:99px;background:var(--card2);overflow:hidden;margin:6px 0 12px}
+.prog i{display:block;height:100%;background:var(--gr);width:0;transition:width .2s}
+
+/* tabbar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(18,16,20,.97);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(6,1fr);padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{height:var(--tabh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--mu);font-size:.72rem;font-weight:800}
+.tabs button i{font-style:normal;font-size:1.25rem;line-height:1}
+.tabs button.on{color:var(--or)}
+.tabs button.ping{position:relative}
+.tabs button.ping::after{content:"";position:absolute;top:10px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--or)}
+.toast{position:fixed;left:50%;top:calc(110px + env(safe-area-inset-top));transform:translateX(-50%);z-index:50;background:var(--or);color:#1a0f06;font-weight:900;padding:10px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.5);max-width:92vw;text-align:center;display:none}
+.toast.show{display:block}
+.foot{color:var(--mu);font-size:.75rem;text-align:center;margin:18px 0 6px}
+@media (min-width:700px){ .qtext{font-size:1.8rem} }
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="hd-row">
+    <div class="brand"><b>비밀의 방 할로윈 파티</b><small id="dayLabel">양양점 지하 · 진행자용</small></div>
+    <div class="clock" id="clock">--:--</div>
+  </div>
+  <div class="hd-row" style="margin-top:6px">
+    <button class="hbtn" id="fsDown" aria-label="글자 작게">가−</button>
+    <button class="hbtn" id="fsUp" aria-label="글자 크게">가+</button>
+    <button class="hbtn" id="wake">화면 켜두기</button>
+    <span style="flex:1"></span>
+    <button class="hbtn" id="dayBtn">토 10.31</button>
+  </div>
+  <button class="now" id="nowStrip"><span class="dot"></span><span class="t" id="nowT">-</span><span class="r" id="nowR"></span></button>
+</header>
+
+<main>
+  <!-- 진행 -->
+  <section class="panel show" id="p-run">
+    <div class="card nowcard" id="nowCard"></div>
+    <h2>전체 진행표</h2>
+    <ol class="tl" id="tl"></ol>
+  </section>
+
+  <!-- 멘트 -->
+  <section class="panel" id="p-say">
+    <h2>멘트</h2>
+    <div class="jump" id="jump"></div>
+    <div id="scripts"></div>
+  </section>
+
+  <!-- 퀴즈 -->
+  <section class="panel" id="p-quiz">
+    <h2>할로윈 퀴즈 <span class="mu" style="font-size:.85rem;font-weight:700">21:15~21:25</span></h2>
+    <div class="seg" id="qView"><button data-v="card" class="on">한 문제씩</button><button data-v="list">전체 목록</button></div>
+    <div class="qmeta" id="qMeta"></div>
+
+    <div id="qCardWrap">
+      <div class="card" id="qYest"></div>
+      <div class="card qcard" id="qCard"></div>
+      <div class="qnav">
+        <button class="btn" id="qPrev" aria-label="이전 문제">◀</button>
+        <button class="btn pri" id="qMain">정답 보기</button>
+      </div>
+      <div class="card prev">
+        <span style="font-weight:800">번호로 이동</span>
+        <input id="qGo" type="number" inputmode="numeric" min="1" max="100" placeholder="번호">
+        <button class="btn sm" id="qGoBtn">이동</button>
+      </div>
+    </div>
+
+    <div id="qListWrap" style="display:none">
+      <div class="seg" id="qFilter" style="margin-bottom:10px"><button data-f="all" class="on">전체</button><button data-f="left">오늘 안 쓴 것만</button></div>
+      <ul class="qlist" id="qList"></ul>
+    </div>
+
+    <details>
+      <summary>진행 방법</summary>
+      <div class="in"><ul class="bul">
+        <li>손 먼저 든 팀이 대답, 맞히면 강아지 간식</li>
+        <li>한 번 맞힌 팀은 다음 문제 한 번 쉬기</li>
+        <li>10분이면 보통 15~20문제</li>
+        <li>넌센스를 아무도 못 맞히면 힌트 한 번 → 그래도 없으면 정답 공개하고 다 같이 웃고 넘어가기</li>
+        <li>분위기가 조용하면 "정답 비슷하게만 말해도 인정!"</li>
+        <li>정답 보기를 누르면 그 문제는 오늘 쓴 문제로 자동 체크돼요</li>
+      </ul></div>
+    </details>
+  </section>
+
+  <!-- 추첨 -->
+  <section class="panel" id="p-lotto">
+    <h2>할로윈 복권 추첨 <span class="mu" style="font-size:.85rem;font-weight:700">21:45~21:55</span></h2>
+    <div class="card">
+      <p class="say">"자, 기다리던 할로윈 복권 추첨 시간이에요! 3등부터 뽑을게요."</p>
+      <p class="act" style="margin:0">바구니 크루가 카드 1장 뽑기 → 진행자가 객실 번호 읽기</p>
+    </div>
+    <div id="lotto"></div>
+    <div class="card">
+      <h3>꼭 지킬 것</h3>
+      <ul class="bul">
+        <li>당첨 객실이 자리에 없으면 객실로 연락해서 선물 전달 <b>(다시 뽑지 않기)</b></li>
+        <li>숙박권에 당첨 객실 적고 확인 사인</li>
+        <li>당첨 팀 사진은 보호자 동의 후 촬영</li>
+      </ul>
+    </div>
+    <button class="btn blk" id="toClosing">추첨 끝 → 마무리 멘트</button>
+  </section>
+
+  <!-- 역할 -->
+  <section class="panel" id="p-role">
+    <h2>크루 역할</h2>
+    <p class="mu" style="margin-top:-6px">이름 칸에 오늘 담당자를 적어두면 이 폰에 저장돼요.</p>
+    <div id="roles"></div>
+  </section>
+
+  <!-- 준비물 -->
+  <section class="panel" id="p-check">
+    <h2>준비물 체크</h2>
+    <div class="mu" id="clCount"></div>
+    <div class="prog"><i id="clBar"></i></div>
+    <ul class="cl" id="cl"></ul>
+    <button class="btn sm" id="clReset" style="margin-top:6px">오늘 체크 초기화</button>
+  </section>
+
+  <p class="foot">GLAMDOG YANGYANG · HALLOWEEN NIGHT · 10.30(금) · 10.31(토) 밤 8시~10시</p>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-p="run" class="on"><i>◷</i>진행</button>
+  <button data-p="say"><i>❝</i>멘트</button>
+  <button data-p="quiz"><i>?</i>퀴즈</button>
+  <button data-p="lotto"><i>★</i>추첨</button>
+  <button data-p="role"><i>☺</i>역할</button>
+  <button data-p="check"><i>✓</i>준비물</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- data ---------- */
+const QRAW = `OX|초콜릿은 강아지가 먹으면 위험하다|O|조금만 먹어도 위험해요
+넌센스|개가 사람을 가르치면?|개인지도|
+객관식|강아지가 기분 좋을 때 하는 행동은? ① 꼬리 살랑살랑 ② 귀를 뒤로 바짝 ③ 몸을 웅크리기|① 꼬리 살랑살랑|오늘 다들 살랑살랑이죠?
+할로윈|할로윈은 매년 몇 월 며칠일까?|10월 31일|
+OX|포도는 강아지에게 줘도 괜찮다|X|포도·건포도는 신장에 위험해요
+초성|ㄱㅇㅈ (힌트: 오늘의 주인공)|강아지|
+넌센스|하늘에 뜨는 일곱 빛깔 '개'는?|무지개|
+객관식|강아지에게 위험한 과일은? ① 사과(씨 뺀 것) ② 포도 ③ 블루베리|② 포도|
+OX|강아지는 사람보다 냄새를 훨씬 잘 맡는다|O|사람보다 수만 배 이상!
+넌센스|머리에 베고 자는 '개'는?|베개|
+할로윈|할로윈에 아이들이 집집마다 다니며 외치는 말은?|Trick or treat!|다 같이 따라 하기!
+OX|강아지는 사람보다 높은 소리를 더 잘 듣는다|O|그래서 초음파 호루라기도 들어요
+객관식|강아지에게 위험한 음식은? ① 양배추 ② 초콜릿 ③ 당근|② 초콜릿|
+넌센스|글씨를 지우는 '개'는?|지우개|
+OX|강아지는 발바닥으로 땀을 흘린다|O|혀로 헥헥대는 건 열 식히기예요
+초성|ㅅㅊ (힌트: 강아지가 제일 좋아하는 외출)|산책|
+할로윈|호박에 얼굴을 새겨 만든 등불 이름은? ① 잭오랜턴 ② 호박죽 ③ 펌킨파이|① 잭오랜턴|
+객관식|진돗개의 고향은? ① 진도 ② 제주도 ③ 울릉도|① 진도|이름에 답이 있어요!
+넌센스|아침에 산을 뿌옇게 덮는 '개'는?|안개|
+OX|강아지 코 무늬는 사람 지문처럼 다 다르다|O|우리 아이 코 한번 보세요!
+OX|강아지가 꼬리를 흔들면 무조건 기분이 좋은 거다|X|긴장할 때도 흔들어요
+넌센스|산을 넘을 때 넘어가는 '개'는?|고개|
+객관식|삽살개는 어느 나라 토종개일까? ① 한국 ② 일본 ③ 중국|① 한국|
+할로윈|할로윈을 대표하는 색 두 가지는?|주황색, 검은색|오늘 비밀의 방 조명 색!
+OX|양파는 강아지에게 위험하다|O|익힌 양파도 안 돼요
+초성|ㄱㅅ (힌트: 맞히면 받는 것)|간식|
+넌센스|왕이 넘어지면?|킹콩|
+객관식|다리가 짧고 몸이 긴 '소시지 강아지'는? ① 닥스훈트 ② 비글 ③ 시츄|① 닥스훈트|
+OX|자일리톨 껌은 강아지에게 위험하다|O|사람 간식은 주지 마세요
+넌센스|소가 웃으면?|우하하|
+할로윈|마녀가 타고 다니는 것은? ① 빗자루 ② 자전거 ③ 킥보드|① 빗자루|
+OX|강아지는 색깔을 하나도 못 본다|X|파란색·노란색은 구분해요
+객관식|글램독 마스코트 영광이의 견종은? ① 진돗개 ② 블랙탄 시바이누 ③ 웰시코기|② 블랙탄 시바이누|오늘은 뱀파이어 영광이!
+넌센스|바나나가 웃으면?|바나나킥|
+OX|아기 강아지는 태어나자마자 눈을 뜬다|X|2주쯤 지나야 떠요
+초성|ㄷㄷㅇ (힌트: 강아지를 귀엽게 부르는 말)|댕댕이|
+할로윈|드라큘라가 싫어한다는 것은? ① 마늘 ② 사탕 ③ 우유|① 마늘|
+객관식|강아지를 영어로? ① Cat ② Puppy ③ Bunny|② Puppy|
+넌센스|딸기가 회사에서 잘리면?|딸기시럽 (딸기 실업)|
+OX|강아지도 사람처럼 젖니가 빠지고 새 이가 난다|O|생후 몇 달 동안 이갈이를 해요
+OX|다 큰 강아지 이빨은 42개다|O|사람(32개)보다 많아요
+넌센스|오리가 얼면?|언덕 (언 덕)|
+객관식|산책 다녀오면 꼭 해줘야 하는 것은? ① 발 닦기 ② 털 염색 ③ 매일 목욕|① 발 닦기|
+할로윈|미라가 몸에 칭칭 감고 있는 것은? ① 붕대 ② 목도리 ③ 이불|① 붕대|
+OX|강아지도 잘 때 꿈을 꾼다|O|자다가 발 움직이는 거 보셨죠?
+초성|ㅎㄹㅇ (힌트: 오늘 파티)|할로윈|
+넌센스|세상에서 가장 뜨거운 과일은?|천도복숭아|
+객관식|아기 강아지가 눈을 뜨는 때는? ① 태어나자마자 ② 2주쯤 뒤 ③ 1년 뒤|② 2주쯤 뒤|
+OX|강아지 체온은 사람보다 조금 높다|O|보통 38~39도예요
+넌센스|차가 깜짝 놀라면?|카놀라유|
+할로윈|'Trick or treat'에서 treat의 뜻은? ① 간식(사탕) ② 장난 ③ 선물 상자|① 간식(사탕)|과자 안 주면 장난칠 거야!
+OX|산책은 강아지 스트레스를 풀어준다|O|냄새 맡기가 최고의 놀이!
+객관식|미국 강아지는 어떻게 짖을까? ① 멍멍 ② 왈왈 ③ Woof woof|③ Woof woof|다 같이 'Woof woof!'
+넌센스|신발이 화나면?|신발끈|
+OX|우유는 강아지에게 무조건 좋은 간식이다|X|배탈 나는 아이가 많아요
+초성|ㅎㅂ (힌트: 할로윈 대표 채소)|호박|
+할로윈|할로윈에 자주 나오는 동물은? ① 검은 고양이 ② 흰 토끼 ③ 판다|① 검은 고양이|
+객관식|일본 강아지는 어떻게 짖을까? ① 왕왕 ② 냥냥 ③ 꿀꿀|① 왕왕|일본에선 '왕왕(ワンワン)'
+넌센스|'문'을 거꾸로 뒤집으면?|곰|종이에 써서 보여주면 더 재밌어요
+OX|강아지 수염은 잘라도 아무 상관없다|X|주변을 느끼는 감각 기관이에요
+OX|강아지가 배를 보이면 편하다는 뜻일 때가 많다|O|믿는 사람한테 보여줘요
+넌센스|왕이 궁에 들어가기 싫을 때 하는 말은?|궁시렁궁시렁|
+객관식|스누피의 견종은? ① 비글 ② 푸들 ③ 불독|① 비글|
+할로윈|유령을 영어로? ① Ghost ② Guest ③ Goat|① Ghost|
+OX|시바견은 일본에서 온 견종이다|O|영광이도 시바이누!
+초성|ㅂㅍㅇㅇ (힌트: 영광이 오늘 코스튬)|뱀파이어|
+넌센스|세상에서 가장 쉬운 숫자는?|190,000 (십구만 → 쉽구만)|
+객관식|'101마리 달마시안' 강아지 털 무늬는? ① 줄무늬 ② 점박이 ③ 체크무늬|② 점박이|
+OX|웰시코기는 원래 소를 몰던 강아지다|O|짧은 다리로 소 발목 사이를 다녔대요
+넌센스|자동차를 톡 치면?|카톡|
+할로윈|해골을 영어로? ① Skeleton ② Skating ③ Skirt|① Skeleton|
+OX|치와와는 가장 작은 견종으로 꼽힌다|O|손바닥만 한 아이도 있어요
+객관식|강아지가 '하이파이브' 할 때 내미는 것은? ① 앞발 ② 뒷발 ③ 꼬리|① 앞발|지금 해볼 수 있는 팀?
+넌센스|물고기 중에 학력이 가장 높은 물고기는?|고등어|
+OX|진돗개는 우리나라 천연기념물이다|O|진도에서 온 토종개예요
+초성|ㄱㄹㄷ (힌트: 여기 펜션 이름)|글램독|
+할로윈|호박을 영어로?|Pumpkin|
+객관식|산책할 때 꼭 필요한 것은? ① 리드줄 ② 우산 ③ 선글라스|① 리드줄|오늘 파티도 목줄 필수!
+넌센스|아몬드가 죽으면?|다이아몬드|
+OX|푸들은 털이 잘 안 빠지는 편이다|O|대신 미용을 자주 해야 해요
+OX|강아지 1살은 사람 나이 1살과 같다|X|1살이면 사람으로 치면 10대예요
+넌센스|소금 장수가 제일 싫어하는 사람은?|싱거운 사람|
+객관식|글램독 양양점에서 강아지가 씻는 곳은? ① 반려견 샤워장 ② 수영장 ③ 바베큐장|① 반려견 샤워장|1층 반려견 샤워장이에요
+할로윈|박쥐를 영어로? ① Bat ② Bag ③ Bus|① Bat|
+OX|닥스훈트는 원래 오소리 사냥개였다|O|이름이 독일어로 '오소리 개'래요
+초성|ㅇㄱㅇ (힌트: 글램독 마스코트)|영광이|
+넌센스|다리가 네 개인데 걷지 못하는 것은?|책상 (의자도 정답)|
+객관식|글램독 양양점 운동장 바닥은? ① 천연잔디 ② 모래 ③ 아스팔트|① 천연잔디|내일 아침 운동장에서 뛰어보세요!
+OX|말티즈는 대부분 하얀 털이다|O|하얀 솜뭉치!
+넌센스|먹으면 먹을수록 안 먹고 싶은 것은?|나이|
+할로윈|할로윈 날 입는 변장 의상을 영어로? ① Costume ② Custom ③ Coffee|① Costume|오늘 다들 코스튬 최고!
+OX|강아지 발톱은 안 깎아도 저절로 다 닳는다|X|주기적으로 깎아줘야 해요
+객관식|강아지가 제일 좋아하는 시간은? ① 산책 시간 ② 목욕 시간 ③ 발톱 깎는 시간|① 산책 시간|정답 인정: 간식 시간이라고 해도 OK!
+넌센스|인천 앞바다의 반대말은?|인천 엄마다|
+OX|강아지에게 하품은 긴장을 푸는 신호이기도 하다|O|졸릴 때만 하는 게 아니에요
+초성|ㅅㅂㅇㄴ (힌트: 영광이 견종)|시바이누|
+할로윈|'Happy ____!' 빈칸에 들어갈 말은?|Halloween|다 같이 'Happy Halloween!'
+객관식|강아지 '앉아'를 영어로? ① Sit ② Stop ③ Sleep|① Sit|'기다려'는 Stay!
+넌센스|세상에서 가장 가난한 왕은?|최저임금|
+OX|강아지는 혀를 내밀고 헥헥대며 더위를 식힌다|O|그래서 여름엔 물이 꼭 필요해요`;
+
+const QS = QRAW.trim().split('\n').map((l,i)=>{
+  const [cat,q,a,tip] = l.split('|');
+  const parts = q.split(/\s(?=[①②③])/);
+  return {n:i+1, cat, stem:parts[0], choices:parts.slice(1), a, tip:tip||''};
+});
+
+const TL = [
+  {s:'19:30',e:'20:00',t:'크루 브리핑',d:'역할 확인 · 간식/입장 카드 수량 체크 · 바구니 비우기 · 선물 3세트 준비',go:['role','역할 보기'],go2:['check','준비물 체크']},
+  {s:'20:00',e:'20:40',t:'입장 · 포토존',d:'코스튬 확인 · 바구니 크루에게 카드 넣고 간식 받기 · 포토존 촬영',go:['say:s-front','프런트 안내 멘트']},
+  {s:'20:40',e:'20:50',t:'오프닝',d:'인사 · 크루 소개 · 안전 수칙 1분 · 진행 순서 안내',go:['say:s-open','오프닝 멘트']},
+  {s:'20:50',e:'21:15',t:'자유 시간',d:'당구 · 탁구 · 크루와 어울리기 · 음식 나눠 먹기'},
+  {s:'21:15',e:'21:25',t:'할로윈 퀴즈',d:'100문제에서 순서대로 · 정답 맞힌 팀에 강아지 간식',go:['quiz','퀴즈 시작'],go2:['say:s-quiz','퀴즈 멘트']},
+  {s:'21:25',e:'21:35',t:'자유 시간',d:'"응모 마감 10분 전" 안내부터!',go:['say:s-close','마감 10분 전 멘트']},
+  {s:'21:35',e:'21:45',t:'응모 마감',d:'바구니 회수 · 응모 카드 수 확인',go:['say:s-close','응모 마감 멘트']},
+  {s:'21:45',e:'21:55',t:'할로윈 복권 추첨',d:'3등 → 2등 → 1등 · 선물 바로 전달 · 당첨 사진 · 단체 사진',go:['lotto','추첨 진행']},
+  {s:'21:55',e:'22:00',t:'마무리',d:'매너타임 안내 · 정리',go:['say:s-end','마무리 멘트']},
+];
+
+const SCRIPTS = [
+  {id:'s-front',t:'입실 안내 (프런트)',tm:'체크인 때',k:'front',html:`
+    <p class="say">"오늘 밤 8시부터 10시까지 지하 '비밀의 방'에서 할로윈 파티가 있어요."</p>
+    <p class="say">"코스튬 하고 오시면 무료로 들어오실 수 있고, 코스튬이 없으시면 카운터에서 꾸미기 용품을 사실 수 있어요."</p>
+    <p class="say">"이건 객실당 한 장 드리는 입장 카드예요. 파티에서 바구니 든 크루한테 'Trick or treat!' 하고 카드를 넣으시면 강아지 간식을 드리고 할로윈 복권에도 응모돼요."</p>
+    <p class="say">"9시 45분에 1등부터 3등까지 뽑고, 선물은 그 자리에서 바로 드려요. 카드는 다시 발급이 안 되니까 꼭 챙겨 와 주세요."</p>
+    <p class="act">카드에 객실 번호 · 반려견 수 · 날짜 체크 후 전달 (객실당 1장)</p>`},
+  {id:'s-open',t:'오프닝',tm:'20:40',k:'open',html:`
+    <p class="say">"안녕하세요! 글램독 양양점 비밀의 방 할로윈 파티에 오신 걸 환영해요! 오늘 함께할 크루들을 소개할게요."</p>
+    <p class="act">크루가 한 명씩 "Hi! I'm ○○!"</p>
+    <p class="say">"모두가 즐거운 파티를 위해 다섯 가지만 부탁드릴게요."</p>
+    <ol class="rules"><li>목줄은 꼭 해주세요</li><li>수컷 친구들은 매너벨트</li><li>예민한 아이는 안아주세요</li><li>초콜릿, 자일리톨 같은 사람 간식은 강아지에게 주지 마세요</li><li>밤 10시 이후엔 객실로 이동해 주세요</li></ol>
+    <p class="say">"오늘 순서는요, 9시 15분에 할로윈 퀴즈! 맞히면 강아지 간식 드려요. 그리고 9시 45분에 할로윈 복권으로 1등부터 3등까지 뽑아요."</p>
+    <p class="say">"원래는 코스튬 투표를 하려고 했는데, 보호자님들께 그 자리에서 바로 선물을 드리고 싶어서 현장 복권으로 바꿨어요."</p>
+    <p class="say">"아직 입장 카드 안 넣으셨으면 바구니 든 크루에게 'Trick or treat!' 하고 넣어 주세요!"</p>`},
+  {id:'s-quiz',t:'할로윈 퀴즈',tm:'21:15',k:'quiz',html:`
+    <h3 class="mu" style="font-size:.85rem">시작</h3>
+    <p class="say">"지금부터 할로윈 퀴즈 시간이에요! 손 먼저 든 팀이 대답하고, 맞히면 강아지 간식을 드려요. 한 번 맞힌 팀은 다음 문제 한 번 쉬어 갈게요!"</p>
+    <button class="btn pri blk" data-goto="quiz" style="margin-bottom:12px">퀴즈 문제 열기</button>
+    <h3 class="mu" style="font-size:.85rem">퀴즈 끝</h3>
+    <p class="say">"퀴즈 참여해 주셔서 감사해요! 9시 45분에 할로윈 복권 추첨해요. 응모는 9시 35분 마감이니까 아직 안 넣으셨으면 지금 넣어 주세요!"</p>`},
+  {id:'s-close',t:'응모 마감 안내',tm:'21:25 · 21:35',k:'close',html:`
+    <div class="chip or" style="margin-bottom:8px">21:25</div>
+    <p class="say">"할로윈 복권 응모 마감 10분 전이에요! 입장 카드 아직 안 넣으신 분은 바구니 든 크루를 찾아 주세요!"</p>
+    <div class="chip or" style="margin-bottom:8px">21:35</div>
+    <p class="say">"응모 마감됐어요! 10분 뒤에 추첨할게요. 당첨 객실이 자리에 안 계시면 객실로 연락드릴게요."</p>
+    <p class="act">바구니 회수 · 응모 카드 수 확인</p>`},
+  {id:'s-lotto',t:'할로윈 복권 추첨',tm:'21:45',k:'lotto',html:`
+    <p class="say">"자, 기다리던 할로윈 복권 추첨 시간이에요! 3등부터 뽑을게요."</p>
+    <button class="btn pri blk" data-goto="lotto">추첨 화면 열기 (당첨 멘트 자동 완성)</button>`},
+  {id:'s-end',t:'마무리',tm:'21:55',k:'end',html:`
+    <p class="say">"오늘 비밀의 방 할로윈 파티 함께해 주셔서 감사해요! 마지막으로 다 같이 단체 사진 한 장 찍을게요!"</p>
+    <p class="act">단체 사진</p>
+    <p class="say">"10시부터는 매너타임이라 객실로 이동 부탁드려요."</p>
+    <p class="say">"글램독은 이런 파티 앞으로도 계속 열 거예요. 인스타 <b>@glamdog_kr</b> 팔로우해 두시면 다음 파티 제일 먼저 알려드릴게요. 좋은 밤 보내세요!"</p>`},
+];
+
+const PRIZES = [
+  {r:3,p:'글램독 반려견 수건 2장 + 반려견 샴푸 1개',say:(x)=>`"3등은… <em>${x}</em>호! 축하드려요! 글램독 반려견 수건 2장이랑 샴푸 드려요!"`},
+  {r:2,p:'강아지 간식 + 영양제',say:(x)=>`"2등은… <em>${x}</em>호! 강아지 간식이랑 영양제 세트예요!"`},
+  {r:1,p:'글램독 1박 숙박권 (11월 30일까지)',say:(x)=>`"두구두구… 오늘의 1등은… <em>${x}</em>호! 글램독 1박 숙박권이에요! 11월 30일까지 쓰실 수 있어요!"`},
+];
+
+const ROLES = [
+  {k:'host',t:'진행자',c:'1명',d:'오프닝 · 퀴즈 · 복권 추첨 · 마무리'},
+  {k:'basket',t:'바구니 담당',c:'1명',d:'눈에 띄는 코스튬 · 입장 카드 받기 · 반려견 1마리당 간식 1개 · 추첨 때 바구니 들고 앞으로'},
+  {k:'door',t:'입구 담당',c:'1명',d:'코스튬 확인 · 코스튬 없는 분은 카운터 꾸미기 용품 안내 · 꽉 차면 "10분 뒤 다시 와주세요"'},
+  {k:'photo',t:'사진 담당',c:'1명',d:'포토존 · 보호자 동의 받고 촬영 (후기용)'},
+  {k:'safe',t:'반려견 안전',c:'1~2명',d:'신경전 나면 떼어놓기 · 배변 정리 · 목줄 확인'},
+  {k:'rest',t:'나머지 크루',c:'-',d:'지하가 좁으면 입구·1층에서 손님 맞이 (지하 안에는 크루 2~3명만)'},
+];
+
+const CHECK = ['입장 카드 (하루 31장)','펜 (객실 번호 기입용)','바구니 1개','웰컴 간식 (반려견 수만큼)','퀴즈 간식 약 15~20개','3등 선물: 수건 2장 + 샴푸','2등 선물: 간식 + 영양제','1등 선물: 숙박권 (프린트)','카운터 꾸미기 용품 (타투 스티커 등)','배변봉투 · 물티슈','이 큐카드 (폰 충전!)'];
+
+/* ---------- state ---------- */
+const KEY='gd_yy_halloween_cue_v1';
+let S; try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S.fs ??= 17; S.quiz ??= {fri:{used:[],idx:0},sat:{used:[],idx:0}}; S.lotto ??= {fri:{},sat:{}}; S.check ??= {fri:{},sat:{}}; S.names ??= {};
+S.view ??= 'card'; S.filter ??= 'all';
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let OFF=0; // rehearsal: ?t=21:15
+function kst(){
+  const p=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date(Date.now()+OFF));
+  const o={};p.forEach(x=>o[x.type]=+x.value); if(o.hour===24)o.hour=0; return o;
+}
+(()=>{const t=new URLSearchParams(location.search).get('t'); if(!t||!/^\d{1,2}:\d{2}$/.test(t))return; const k=kst(); const [h,m]=t.split(':').map(Number);
+  OFF=((h*3600+m*60)-(k.hour*3600+k.minute*60+k.second))*1000; })();
+if(!S.day){ const k=kst(); S.day = (k.month===10&&k.day===30)?'fri':'sat'; }
+const DAYLBL={fri:'금 10.30',sat:'토 10.31'};
+const DAYSH={fri:'금',sat:'토'};
+
+/* ---------- font / wake ---------- */
+function applyFs(){document.documentElement.style.setProperty('--fs',S.fs+'px')}
+$('#fsUp').onclick=()=>{S.fs=Math.min(24,S.fs+1);applyFs();save()};
+$('#fsDown').onclick=()=>{S.fs=Math.max(14,S.fs-1);applyFs();save()};
+applyFs();
+let wl=null;
+async function wakeOn(){try{ if('wakeLock' in navigator){wl=await navigator.wakeLock.request('screen');$('#wake').classList.add('on');$('#wake').textContent='화면 켜짐';wl.addEventListener('release',()=>{$('#wake').classList.remove('on');$('#wake').textContent='화면 켜두기'})}else{toast('이 폰은 화면 켜두기를 지원 안 해요. 설정에서 자동 잠금을 늘려주세요')}}catch(e){toast('화면 켜두기 실패. 한 번 더 눌러주세요')}}
+$('#wake').onclick=()=>{ if(wl){$('#wake').dataset.want='0';wl.release();wl=null}else{$('#wake').dataset.want='1';wakeOn()} };
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && $('#wake').dataset.want==='1' && !wl) wakeOn() });
+
+/* ---------- day ---------- */
+function renderDay(){ $('#dayBtn').textContent=DAYLBL[S.day]+' ▾'; $('#dayLabel').textContent='양양점 지하 · '+DAYLBL[S.day]+' · 진행자용'; }
+$('#dayBtn').onclick=()=>{ S.day = S.day==='fri'?'sat':'fri'; save(); renderDay(); renderQuiz(); renderLotto(); renderCheck(); toast(DAYLBL[S.day]+' 기록으로 바꿨어요'); };
+
+/* ---------- tabs ---------- */
+function go(p){
+  let anchor=null; if(p.startsWith('say:')){anchor=p.slice(4);p='say'}
+  document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('show',x.id==='p-'+p));
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  if(anchor){ const el=document.getElementById(anchor); if(el) setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),30) }
+  else window.scrollTo({top:0});
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>go(b.dataset.p));
+document.addEventListener('click',e=>{const g=e.target.closest('[data-goto]'); if(g) go(g.dataset.goto)});
+
+/* ---------- time / now ---------- */
+const toMin=s=>{const [h,m]=s.split(':').map(Number);return h*60+m};
+function fmtLeft(sec){ if(sec<0)sec=0; const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60; return h?`${h}시간 ${m}분`:(m>=10?`${m}분`:`${m}:${String(s).padStart(2,'0')}`) }
+let lastCur=-2, lastToastKey='';
+function tick(){
+  const k=kst(); const nowS=k.hour*3600+k.minute*60+k.second;
+  $('#clock').textContent=`${String(k.hour).padStart(2,'0')}:${String(k.minute).padStart(2,'0')}`;
+  let cur=-1;
+  TL.forEach((x,i)=>{ if(nowS>=toMin(x.s)*60 && nowS<toMin(x.e)*60) cur=i });
+  const first=toMin(TL[0].s)*60, last=toMin(TL[TL.length-1].e)*60;
+  let nowT, nowR, card;
+  if(cur>=0){
+    const x=TL[cur], left=toMin(x.e)*60-nowS, nx=TL[cur+1];
+    nowT=x.t; nowR=`남은 ${fmtLeft(left)}`;
+    card=`<div class="lbl">지금</div><div class="ttl">${x.t}</div><div class="tm">${x.s} ~ ${x.e}</div><p style="margin:8px 0 0">${x.d}</p>
+      <div class="left">남은 시간 ${fmtLeft(left)}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${x.go?`<button class="btn pri" data-goto="${x.go[0]}">${x.go[1]}</button>`:''}${x.go2?`<button class="btn" data-goto="${x.go2[0]}">${x.go2[1]}</button>`:''}</div>
+      ${nx?`<div class="nextline">다음 <b style="color:var(--tx)">${nx.s} ${nx.t}</b> · ${nx.d}</div>`:''}`;
+  } else if(nowS<first){
+    const left=first-nowS;
+    nowT='파티 전'; nowR=`19:30 브리핑까지 ${fmtLeft(left)}`;
+    card=`<div class="lbl">파티 전</div><div class="ttl">19:30 크루 브리핑</div><div class="left">${fmtLeft(left)} 남음</div><p class="mu" style="margin:6px 0 0">미리 준비물 체크하고, 화면 켜두기 눌러두세요.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn pri" data-goto="check">준비물 체크</button><button class="btn" data-goto="role">역할 보기</button></div>`;
+  } else {
+    nowT='오늘 파티 끝'; nowR='수고하셨어요!';
+    card=`<div class="lbl">종료</div><div class="ttl">오늘 파티 끝!</div><p style="margin:6px 0 0">매너타임 · 정리. 당첨 객실 선물 전달 다 됐는지 추첨 화면에서 확인하세요.</p><div style="margin-top:10px"><button class="btn pri" data-goto="lotto">추첨 기록 보기</button></div>`;
+  }
+  $('#nowT').textContent=nowT; $('#nowR').textContent=nowR;
+  if(cur!==lastCur || nowS%10===0){ $('#nowCard').innerHTML=card; }
+  if(cur!==lastCur){
+    document.querySelectorAll('#tl li').forEach((li,i)=>{li.classList.toggle('cur',i===cur);li.classList.toggle('past',(cur>=0&&i<cur)||nowS>=last)});
+    const curScript = cur>=0 ? ({1:'s-front',2:'s-open',4:'s-quiz',5:'s-close',6:'s-close',7:'s-lotto',8:'s-end'})[cur] : null;
+    document.querySelectorAll('.sc').forEach(el=>el.classList.toggle('cur',el.id===curScript));
+    document.querySelectorAll('#jump button').forEach(b=>b.classList.toggle('pri',b.dataset.to===curScript));
+    if(lastCur!==-2 && cur>=0) { toast(`지금: ${TL[cur].t}`); if(navigator.vibrate) navigator.vibrate([200,100,200]); }
+    lastCur=cur;
+  }
+  // quiz timer
+  const qs=toMin('21:15')*60, qe=toMin('21:25')*60;
+  const tEl=document.getElementById('qTimer');
+  if(tEl){ if(nowS>=qs&&nowS<qe){tEl.style.display='';tEl.textContent='퀴즈 남은 시간 '+fmtLeft(qe-nowS)} else tEl.style.display='none' }
+}
+$('#nowStrip').onclick=()=>go('run');
+
+/* ---------- render: timeline ---------- */
+$('#tl').innerHTML=TL.map(x=>`<li><div class="when">${x.s}<br><span class="mu" style="font-weight:600">~${x.e}</span></div><div class="what"><b>${x.t}</b><p>${x.d}</p>${x.go?`<button class="btn sm" data-goto="${x.go[0]}">${x.go[1]}</button>`:''}</div></li>`).join('');
+
+/* ---------- render: scripts ---------- */
+$('#jump').innerHTML=SCRIPTS.map(s=>`<button class="btn sm" data-to="${s.id}">${s.t.replace(' (프런트)','')}</button>`).join('');
+$('#jump').onclick=e=>{const b=e.target.closest('button'); if(b) document.getElementById(b.dataset.to).scrollIntoView({behavior:'smooth',block:'start'})};
+$('#scripts').innerHTML=SCRIPTS.map(s=>`<div class="card sc" id="${s.id}"><div class="head"><h3>${s.t}</h3><span class="chip or">${s.tm}</span></div>${s.html}</div>`).join('');
+
+/* ---------- quiz ---------- */
+let revealed=false;
+const Qd=()=>S.quiz[S.day];
+const usedIn=(d,n)=>S.quiz[d].used.includes(n);
+function markUsed(n){ const q=Qd(); if(!q.used.includes(n)){q.used.push(n);save()} }
+function nextUnused(from){ const q=Qd(); for(let k=1;k<=100;k++){const i=(from+k)%100; if(!q.used.includes(i+1)) return i} return (from+1)%100 }
+function renderQuiz(){
+  const q=Qd(); if(q.idx==null) q.idx=0;
+  const cnt=q.used.length;
+  $('#qMeta').innerHTML=`<span class="chip or">${DAYLBL[S.day]}</span><span class="chip">오늘 ${cnt}문제 진행</span><span class="chip">남은 ${100-cnt}문제</span><span class="chip or timer" id="qTimer" style="display:none"></span>`;
+  // card
+  const x=QS[q.idx]; const used=usedIn(S.day,x.n);
+  const isOX=x.cat==='OX';
+  let body=`<div class="qtop"><span class="qnum">Q${x.n}</span><span class="chip cat-${x.cat}">${x.cat}</span>${used?'<span class="chip used">오늘 사용함</span>':''}</div>
+    <div class="qtext ${isOX?'ox':''}">${esc(x.stem)}</div>`;
+  if(isOX) body+=`<div class="oxbig"><span class="${revealed&&x.a==='O'?'ok':''}">O</span><span class="${revealed&&x.a==='X'?'ok':''}">X</span></div>`;
+  if(x.choices.length) body+=`<ul class="choices">${x.choices.map(c=>`<li class="${revealed&&c.trim()===x.a.trim()?'ok':''}">${esc(c)}</li>`).join('')}</ul>`;
+  body+=`<div class="ans ${revealed?'':'hide'}"><div class="a">${esc(x.a)}</div>${x.tip?`<div class="tip">${esc(x.tip)}</div>`:''}</div>`;
+  $('#qCard').innerHTML=body;
+  $('#qMain').textContent = revealed?'다음 문제 ▶':'정답 보기';
+  // yesterday helper
+  const other = S.day==='sat'?'fri':null;
+  if(other && S.quiz.fri.used.length===0){
+    $('#qYest').style.display='';
+    $('#qYest').innerHTML=`<h3>어제(금) 몇 번까지 썼어요?</h3><p class="mu" style="margin:0 0 8px">적으면 그 다음 번호부터 시작해요. 처음이면 비워두세요.</p>
+      <div class="prev"><input id="yN" type="number" inputmode="numeric" min="1" max="100" placeholder="예: 18"><span>번까지</span><button class="btn sm pri" id="yBtn">적용</button></div>`;
+    $('#yBtn').onclick=()=>{const n=Math.max(0,Math.min(100,parseInt($('#yN').value)||0)); if(!n)return;
+      S.quiz.fri.used=Array.from({length:n},(_,i)=>i+1); S.quiz.sat.idx=n%100; revealed=false; save(); renderQuiz(); toast(`${n+1}번부터 시작해요`)};
+  } else $('#qYest').style.display='none';
+  // list
+  const f=S.filter;
+  $('#qList').innerHTML=QS.filter(z=>f==='all'||!usedIn(S.day,z.n)).map(z=>`<li class="${usedIn(S.day,z.n)?'is-used':''} ${z.n===x.n?'is-cur':''}" data-n="${z.n}">
+    <span class="n">${z.n}</span>
+    <div class="q"><span class="chip cat-${z.cat}" style="margin-right:4px">${z.cat}</span>${esc(z.stem)}${z.choices.length?`<div class="mu" style="font-size:.85rem">${esc(z.choices.join('  '))}</div>`:''}<b>${esc(z.a)}</b></div>
+    <div class="ck"><button data-d="fri" class="${usedIn('fri',z.n)?'on':''}">금</button><button data-d="sat" class="${usedIn('sat',z.n)?'on':''}">토</button></div></li>`).join('');
+  document.querySelectorAll('#qView button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.view));
+  document.querySelectorAll('#qFilter button').forEach(b=>b.classList.toggle('on',b.dataset.f===S.filter));
+  $('#qCardWrap').style.display=S.view==='card'?'':'none';
+  $('#qListWrap').style.display=S.view==='list'?'':'none';
+  tick();
+}
+$('#qMain').onclick=()=>{
+  const q=Qd();
+  if(!revealed){ revealed=true; markUsed(QS[q.idx].n); }
+  else { q.idx=nextUnused(q.idx); revealed=false; save(); }
+  renderQuiz();
+};
+$('#qPrev').onclick=()=>{const q=Qd(); q.idx=(q.idx+99)%100; revealed=false; save(); renderQuiz()};
+$('#qGoBtn').onclick=()=>{const n=parseInt($('#qGo').value); if(n>=1&&n<=100){Qd().idx=n-1;revealed=false;save();renderQuiz();$('#qGo').value=''}};
+$('#qView').onclick=e=>{const b=e.target.closest('button'); if(!b)return; S.view=b.dataset.v; save(); renderQuiz()};
+$('#qFilter').onclick=e=>{const b=e.target.closest('button'); if(!b)return; S.filter=b.dataset.f; save(); renderQuiz()};
+$('#qList').onclick=e=>{
+  const li=e.target.closest('li'); if(!li) return; const n=+li.dataset.n;
+  const b=e.target.closest('button[data-d]');
+  if(b){ const arr=S.quiz[b.dataset.d].used; const i=arr.indexOf(n); i>=0?arr.splice(i,1):arr.push(n); save(); renderQuiz(); return; }
+  Qd().idx=n-1; revealed=false; S.view='card'; save(); renderQuiz(); window.scrollTo({top:0});
+};
+
+/* ---------- lotto ---------- */
+function renderLotto(){
+  const L=S.lotto[S.day];
+  $('#lotto').innerHTML=PRIZES.map(p=>{const v=L['r'+p.r]||''; const done=!!L['d'+p.r];
+    return `<div class="card lotto-card r${p.r} ${done?'fin':''}"><div class="step"><div class="rank">${p.r}등</div><div>
+      <div class="prize">${p.p}</div>
+      <div class="room"><input data-r="${p.r}" inputmode="numeric" placeholder="객실 번호" value="${esc(v)}"><span>호</span></div>
+      <div class="lsay" id="ls${p.r}">${p.say(v?esc(v):'○○○')}</div>
+      <div class="done-row"><button class="tog ${done?'on':''}" data-t="d${p.r}">${done?'✓ 선물 전달 완료':'선물 전달 완료'}</button>
+      ${p.r===1?`<button class="tog ${L.sign?'on':''}" data-t="sign">${L.sign?'✓ 숙박권 사인 받음':'숙박권 객실·사인'}</button>`:''}
+      <button class="tog ${L['away'+p.r]?'on':''}" data-t="away${p.r}">${L['away'+p.r]?'✓ 자리 없음 → 객실 연락':'자리에 없음'}</button></div>
+    </div></div></div>`}).join('') + `<div class="card"><button class="tog ${L.group?'on':''}" data-t="group" style="width:100%">${L.group?'✓ 단체 사진 찍음':'단체 사진 찍기'}</button></div>`;
+}
+$('#lotto').addEventListener('input',e=>{const i=e.target.closest('input[data-r]'); if(!i)return; const r=+i.dataset.r; S.lotto[S.day]['r'+r]=i.value.trim(); save();
+  const p=PRIZES.find(z=>z.r===r); $('#ls'+r).innerHTML=p.say(i.value.trim()?esc(i.value.trim()):'○○○');});
+$('#lotto').addEventListener('click',e=>{const b=e.target.closest('[data-t]'); if(!b)return; const L=S.lotto[S.day]; L[b.dataset.t]=!L[b.dataset.t]; save(); renderLotto();});
+$('#toClosing').onclick=()=>go('say:s-end');
+
+/* ---------- roles ---------- */
+$('#roles').innerHTML=ROLES.map(r=>`<div class="card role"><b>${r.t}</b><span class="cnt">${r.c}</span><p>${r.d}</p>${r.k!=='rest'?`<div class="nm"><input data-k="${r.k}" placeholder="담당자 이름" value="${esc(S.names[r.k]||'')}"></div>`:''}</div>`).join('');
+$('#roles').addEventListener('input',e=>{const i=e.target.closest('input[data-k]'); if(i){S.names[i.dataset.k]=i.value;save()}});
+
+/* ---------- checklist ---------- */
+function renderCheck(){
+  const C=S.check[S.day]; const n=CHECK.filter((_,i)=>C[i]).length;
+  $('#cl').innerHTML=CHECK.map((t,i)=>`<li class="${C[i]?'on':''}"><button data-i="${i}"><span class="bx"></span>${t}</button></li>`).join('');
+  $('#clCount').textContent=`${DAYLBL[S.day]} · ${n} / ${CHECK.length} 준비 완료`;
+  $('#clBar').style.width=(n/CHECK.length*100)+'%';
+  document.querySelector('#tabs [data-p="check"]').classList.toggle('ping', n<CHECK.length);
+}
+$('#cl').onclick=e=>{const b=e.target.closest('button[data-i]'); if(!b)return; const C=S.check[S.day]; C[b.dataset.i]=!C[b.dataset.i]; save(); renderCheck()};
+$('#clReset').onclick=()=>{ if(confirm('오늘 준비물 체크를 모두 지울까요?')){S.check[S.day]={};save();renderCheck()} };
+
+/* ---------- toast ---------- */
+let tt; function toast(m){const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),2600)}
+
+renderDay(); renderQuiz(); renderLotto(); renderCheck(); tick(); setInterval(tick,1000);
+</script>
+</body>
+</html>
